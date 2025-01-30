@@ -1,19 +1,54 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
-
+import toast, {Toaster} from "react-hot-toast";
 const PostAJob = () => {
   const [jobTitle, setTitle] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [location, setLocation] = useState("");
-  const [salary, setSalary] = useState("");
+  const [salary, setSalary] = useState();
   const [jobType, setJobType] = useState("");
   const [jobDescription, setJobDescription] = useState("");
-  const [jobQualifications, setJobQualifications] = useState("");
-  const [formData, setFormData] = useState(false);
-
-  const handleSubmitForm = (event) => {
+  const [requireQualifications, setRequireQualifications] = useState("");
+  
+  const handleSubmitForm = async (event) => {
     event.preventDefault();
-    
+    const requestedData ={
+      jobTitle: jobTitle,
+      companyName: companyName,
+      location: location,
+      salary: parseInt(salary),
+      jobType: jobType,
+      jobDescription: jobDescription,
+      requireQualifications:requireQualifications
+    }
+    try {
+      const response = await fetch(
+        "https://intern-house-backend-rekha.vercel.app/jobs",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(requestedData),
+        }
+      );
+      if (!response.ok) {
+        throw "Failed to add job post.";
+      }
+      const data = response.json();
+      if (data) {        
+        toast.success("Job Added Successfully");
+        setTitle("")
+        setCompanyName("")
+        setLocation("")
+        setSalary("")
+        setJobType("")
+        setJobDescription("")
+        setRequireQualifications("")
+      }
+    } catch (error) {
+      toast.error("Error while adding job post", error);
+    }
   };
 
   return (
@@ -53,7 +88,7 @@ const PostAJob = () => {
             Salary:
           </label>
           <input
-            type="text"
+            type="number"
             className="form-control"
             onChange={(event) => setSalary(event.target.value)}
           />
@@ -61,11 +96,17 @@ const PostAJob = () => {
           <label htmlFor="jobType" className="form-label mt-1">
             Job Type:
           </label>
-          <input
+          <select
             type="text"
             className="form-control"
             onChange={(event) => setJobType(event.target.value)}
-          />
+          >
+            <option ></option>
+            <option value="Full-time (On-site)">Full-time (On-site)</option>
+            <option value="Part-time (On-site)">Part-time (On-site)</option>
+            <option value="Full-time (Remote)">Full-time (Remote)</option>
+            <option value="Part-time (Remote)">Part-time (Remote)</option>
+          </select>
 
           <label htmlFor="jobDescription" className="form-label mt-1">
             Job Description:
@@ -82,7 +123,7 @@ const PostAJob = () => {
           <textarea
             type="text"
             className="form-control"
-            onChange={(event) => setJobQualifications(event.target.value)}
+            onChange={(event) => setRequireQualifications(event.target.value)}
           ></textarea>
 
           <button className="btn btn-primary my-3" type="submit">
@@ -90,6 +131,7 @@ const PostAJob = () => {
           </button>
         </form>
       </div>
+        <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

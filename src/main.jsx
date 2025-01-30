@@ -6,6 +6,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import App from './App.jsx'
 import PostAJob from './pages/PostAJob.jsx'
+import JobDetails from './pages/JobDetails.jsx'
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path:"/postAJob",
     element: <PostAJob />
+  },
+  {
+    path:"/jobDetails/:jobId",
+    element: <JobDetails />
   },
 ])
 
