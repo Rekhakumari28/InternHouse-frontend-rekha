@@ -1,11 +1,10 @@
 import React from "react";
 import Header from "../components/Header";
 import useFetch from "../../useFetch";
-import { useParams, Link } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 const JobDetails = () => {
-  const { data, loading, error } = useFetch(
+  const { data } = useFetch(
     "https://intern-house-backend-rekha.vercel.app/jobs"
   );
   const jobId = useParams();
