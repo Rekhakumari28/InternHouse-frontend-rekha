@@ -45,6 +45,9 @@ const PostAJob = () => {
         setJobType("")
         setJobDescription("")
         setRequireQualifications("")
+        setTimeout(() => {
+          window.location.reload()
+        }, 3000);
       }
     } catch (error) {
       toast.error("Error while adding job post", error);
