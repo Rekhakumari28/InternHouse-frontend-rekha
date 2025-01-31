@@ -14,6 +14,9 @@ export default function JobList({ data }) {
       const data = response.json();
       if (data) {
         toast.success("Post removed successfully.");
+        setTimeout(() => {
+          window.location.reload()
+        }, 3000);
       }
     } catch (error) {
       toast.error("Error occured while deleting job post.", error);
